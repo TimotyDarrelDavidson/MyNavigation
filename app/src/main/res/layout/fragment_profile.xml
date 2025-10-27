@@ -15,4 +15,12 @@
         android:textSize="30sp"
         android:text="PROFILE" />
 
+    <Button
+        android:id="@+id/buttonOpen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_margin="16dp"
+        android:text="Buka Detail" />
+
 </FrameLayout>
