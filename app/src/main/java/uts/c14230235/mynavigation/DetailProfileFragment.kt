@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import uts.c14230235.mynavigation.databinding.FragmentDetailProfileBinding
+import uts.c14230235.mynavigation.databinding.FragmentProfileBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +23,8 @@ class DetailProfileFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private var binding : FragmentDetailProfileBinding? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -29,12 +33,23 @@ class DetailProfileFragment : Fragment() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding!!.tvParam.text = param1.toString()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentDetailProfileBinding.inflate(
+            inflater,
+            container,
+            false
+        )
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail_profile, container, false)
+        return binding!!.root
     }
 
     companion object {
