@@ -55,6 +55,13 @@ class ProfileFragment : Fragment() {
             )
         }
 
+        binding!!.buttonOpenSafe.setOnClickListener {
+            val action = ProfileFragmentDirections.actionProfileFragmentToDetailProfileFragment(
+                "a@gmail.com"
+            )
+            findNavController().navigate(action)
+        }
+
         return binding!!.root
     }
 

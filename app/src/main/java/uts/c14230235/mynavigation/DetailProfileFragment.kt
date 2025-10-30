@@ -48,6 +48,9 @@ class DetailProfileFragment : Fragment() {
             container,
             false
         )
+
+        val dataTerima = DetailProfileFragmentArgs.fromBundle(arguments as Bundle).dataSatu
+        binding!!.tvParamSafeArgs.text = dataTerima
         // Inflate the layout for this fragment
         return binding!!.root
     }

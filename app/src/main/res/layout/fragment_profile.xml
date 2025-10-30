@@ -15,12 +15,31 @@
         android:textSize="30sp"
         android:text="PROFILE" />
 
-    <Button
-        android:id="@+id/buttonOpen"
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_gravity="bottom"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:layout_margin="16dp"
-        android:text="Buka Detail" />
+        android:orientation="horizontal" >
+
+
+        <Button
+            android:id="@+id/buttonOpen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:text="Buka Detail" />
+
+        <Button
+            android:id="@+id/buttonOpenSafe"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:text="Safe Args" />
+
+    </LinearLayout>
 
 </FrameLayout>
