@@ -50,14 +50,18 @@ class BahanFragment : Fragment() {
 
         val _lv= view.findViewById<ListView>(R.id.lv)
 
+        val nama = resources.getStringArray(R.array.namaProduk)
+        val kategori = resources.getStringArray(R.array.kategoriProduk)
+        val gambar = resources.getStringArray(R.array.gambarProduk)
+
         val data = mutableListOf<Map<String, String>>()
 
-        for (i in dataNama.indices) {
-            val map = mapOf(
-                "nama" to dataNama[i],
-                "kategori" to dataKategori[i]
-            )
-            data.add(map)
+        for (i in nama.indices) {
+            val item = HashMap<String, String>()
+            item["nama"] = nama[i]
+            item["kategori"] = kategori[i]
+            item["gambar"] = gambar[i]
+            data.add(item)
         }
 
         val adapter = SimpleAdapter(
