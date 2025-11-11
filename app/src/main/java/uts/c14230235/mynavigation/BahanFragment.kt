@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.SimpleAdapter
@@ -34,6 +35,7 @@ class BahanFragment : Fragment() {
 
     private var dataNama = mutableListOf<String>()
     private var dataKategori = mutableListOf<String>()
+    private var dataURL = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +71,7 @@ class BahanFragment : Fragment() {
         _lv.adapter = adapter
 
 
-        val _addBahan = view.findViewById< Button>(R.id.addBahan)
+        val _addBahan = view.findViewById<ImageView>(R.id.addBahan)
         _addBahan.setOnClickListener {
             showAddBahanDialog(dataNama, dataKategori, data, adapter)
         }
@@ -110,24 +112,35 @@ class BahanFragment : Fragment() {
         val etKategori = EditText(requireContext())
         etKategori.hint = "Tuliskan kategori bahan"
 
+        val tvURL = TextView(requireContext())
+        tvURL.text = "URL image"
+        tvURL.setTextSize(16f)
+
+        val etURL = EditText(requireContext())
+        etURL.hint = "Tuliskan URL image"
+
         layout.addView(tvNama)
         layout.addView(etNama)
         layout.addView(tvKategori)
         layout.addView(etKategori)
+        layout.addView(tvURL)
+        layout.addView(etURL)
 
         builder.setView(layout)
 
         builder.setPositiveButton("Simpan") { dialog, _ ->
             val nama = etNama.text.toString().trim()
             val kategori = etKategori.text.toString().trim()
+            val URL = etURL.text.toString().trim()
 
             if (nama.isNotEmpty() && kategori.isNotEmpty()) {
                 // Tambahkan ke list utama
                 dataNama.add(nama)
                 dataKategori.add(kategori)
+                dataURL.add(URL)
 
                 // Buat map baru untuk SimpleAdapter
-                val map = mapOf("nama" to nama, "kategori" to kategori)
+                val map = mapOf("nama" to nama, "kategori" to kategori, "URL" to URL)
 
                 // Karena SimpleAdapter menggunakan List<Map<String, String>>,
                 // kita perlu akses list data-nya dari adapter
