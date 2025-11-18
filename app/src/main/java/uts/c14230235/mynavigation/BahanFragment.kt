@@ -1,6 +1,8 @@
 package uts.c14230235.mynavigation
 
 import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,6 +19,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.motion.widget.KeyPosition
 import androidx.lifecycle.GeneratedAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,6 +41,10 @@ class BahanFragment : Fragment() {
     private var dataKategori = mutableListOf<String>()
     private var dataURL = mutableListOf<String>()
 
+    private var arBahan = arrayListOf<dcBahan>()
+
+    private lateinit var _rvBahan : RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -48,37 +56,19 @@ class BahanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val _lv= view.findViewById<ListView>(R.id.lv)
+        val adapter = adapterRecView(arBahan)
 
-        val nama = resources.getStringArray(R.array.namaProduk)
-        val kategori = resources.getStringArray(R.array.kategoriProduk)
-        val gambar = resources.getStringArray(R.array.gambarProduk)
-
-        val data = mutableListOf<Map<String, String>>()
-
-        for (i in nama.indices) {
-            val item = HashMap<String, String>()
-            item["nama"] = nama[i]
-            item["kategori"] = kategori[i]
-            item["gambar"] = gambar[i]
-            data.add(item)
-        }
-
-        val adapter = SimpleAdapter(
-            requireContext(),
-            data,
-            android.R.layout.simple_list_item_2,
-            arrayOf("nama", "kategori"),
-            intArrayOf(android.R.id.text1, android.R.id.text2)
-        )
-
-        _lv.adapter = adapter
-
-
-        val _addBahan = view.findViewById<ImageView>(R.id.addBahan)
+        val _addBahan = view.findViewById<Button>(R.id.addBahan)
         _addBahan.setOnClickListener {
-            showAddBahanDialog(dataNama, dataKategori, data, adapter)
+            showAddBahanDialog(dataNama, dataKategori, dataURL, adapter)
         }
+
+
+        _rvBahan = view?.findViewById(R.id.rvBahan)!!
+        SiapkanData()
+        TambahData()
+        TampilkanData(adapter)
+
     }
 
     override fun onCreateView(
@@ -92,8 +82,8 @@ class BahanFragment : Fragment() {
     private fun showAddBahanDialog(
         dataNama: MutableList<String>,
         dataKategori: MutableList<String>,
-        data: MutableList<Map<String, String>>,
-        adapter: SimpleAdapter,
+        dataURL: MutableList<String>,
+        adapter: adapterRecView,
     ){
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Add Bahan")
@@ -143,15 +133,8 @@ class BahanFragment : Fragment() {
                 dataKategori.add(kategori)
                 dataURL.add(URL)
 
-                // Buat map baru untuk SimpleAdapter
-                val map = mapOf("nama" to nama, "kategori" to kategori, "URL" to URL)
+                TambahData()
 
-                // Karena SimpleAdapter menggunakan List<Map<String, String>>,
-                // kita perlu akses list data-nya dari adapter
-                val dataList = data
-                dataList.add(map)
-
-                // Perbarui tampilan
                 adapter.notifyDataSetChanged()
             } else {
                 Toast.makeText(requireContext(), "Isi semua field terlebih dahulu", Toast.LENGTH_SHORT).show()
@@ -162,6 +145,25 @@ class BahanFragment : Fragment() {
 
         builder.setNegativeButton("Batal", null)
         builder.show()
+    }
+
+    fun SiapkanData() {
+        dataNama = resources.getStringArray(R.array.namaProduk).toMutableList()
+        dataKategori = resources.getStringArray(R.array.kategoriProduk).toMutableList()
+        dataURL = resources.getStringArray(R.array.gambarProduk).toMutableList()
+    }
+
+    fun TambahData() {
+        arBahan.clear()
+        for (position in dataNama.indices) {
+            val dataBahan = dcBahan(dataNama[position], dataKategori[position], dataURL[position])
+            arBahan.add(dataBahan)
+        }
+    }
+
+    fun TampilkanData(adapterRecView: adapterRecView) {
+        _rvBahan.layoutManager = LinearLayoutManager(requireContext())
+        _rvBahan.adapter = adapterRecView
     }
 
     companion object {

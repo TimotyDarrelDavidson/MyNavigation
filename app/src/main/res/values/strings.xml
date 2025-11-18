@@ -50,26 +50,29 @@
     </string-array>
 
     <string-array name="gambarProduk">
-        <item>https://images.unsplash.com/photo-1511920170033-f8396924c348</item>
-        <item>https://images.unsplash.com/photo-1509042239860-f550ce710b93</item>
-        <item>https://images.unsplash.com/photo-1510626176961-4b57d4fbad03</item>
-        <item>https://images.unsplash.com/photo-1504544750208-dc0358e63f7f</item>
-        <item>https://images.unsplash.com/photo-1605296867304-46d5465a13f1</item>
-        <item>https://images.unsplash.com/photo-1571071215959-5b3cc6c0d2a7</item>
-        <item>https://images.unsplash.com/photo-1590080875831-02c1a7d18a47</item>
-        <item>https://images.unsplash.com/photo-1563906267088-b029e7101112</item>
-        <item>https://images.unsplash.com/photo-1579446565308-427218a2b546</item>
-        <item>https://images.unsplash.com/photo-1578985545062-69928b1d9587</item>
-        <item>https://images.unsplash.com/photo-1617093727343-3764f0dfe8b3</item>
-        <item>https://images.unsplash.com/photo-1589302168068-964664d93dc0</item>
-        <item>https://images.unsplash.com/photo-1625944230943-8f2a4d1bfe06</item>
-        <item>https://images.unsplash.com/photo-1605478058964-6f682f93fbcf</item>
-        <item>https://images.unsplash.com/photo-1617196034796-73fddf8d7d6f</item>
-        <item>https://images.unsplash.com/photo-1617196034732-6f6834efcf3f</item>
-        <item>https://images.unsplash.com/photo-1600096194534-96b25b52a7b8</item>
-        <item>https://images.unsplash.com/photo-1568901346375-23c9450c58cd</item>
-        <item>https://images.unsplash.com/photo-1626073469094-1c6e65e0e2a2</item>
-        <item>https://images.unsplash.com/photo-1604908177096-3aa1f624e77e</item>
+        <item>https://picsum.photos/seed/kopi1/400</item>
+        <item>https://picsum.photos/seed/kopi2/400</item>
+        <item>https://picsum.photos/seed/tehhijau/400</item>
+        <item>https://picsum.photos/seed/tehhitam/400</item>
+        <item>https://picsum.photos/seed/susukedelai/400</item>
+        <item>https://picsum.photos/seed/jusmangga/400</item>
+        <item>https://picsum.photos/seed/jusalpukat/400</item>
+        <item>https://picsum.photos/seed/airmineral/400</item>
+        <item>https://picsum.photos/seed/rotigandum/400</item>
+        <item>https://picsum.photos/seed/kuecokelat/400</item>
+        <item>https://picsum.photos/seed/keripiksingkong/400</item>
+        <item>https://picsum.photos/seed/keripikkentang/400</item>
+        <item>https://picsum.photos/seed/nasigoreng/400</item>
+        <item>https://picsum.photos/seed/miegoreng/400</item>
+        <item>https://picsum.photos/seed/saladbuah/400</item>
+        <item>https://picsum.photos/seed/pizzamini/400</item>
+        <item>https://picsum.photos/seed/donatcokelat/400</item>
+        <item>https://picsum.photos/seed/burgerayam/400</item>
+        <item>https://picsum.photos/seed/sateayam/400</item>
+        <item>https://picsum.photos/seed/baksosapi/400</item>
     </string-array>
+
+
+
 
 </resources>
