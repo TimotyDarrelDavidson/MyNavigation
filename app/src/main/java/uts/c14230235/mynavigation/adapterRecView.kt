@@ -9,14 +9,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
-class adapterRecView (private val data: List<dcBahan>) : RecyclerView.Adapter<adapterRecView.ListViewHolder>() {
+class adapterRecView (
+    private val data: List<dcBahan>,
+    private val onDoubleClick: (Int) -> Unit
+) : RecyclerView.Adapter<adapterRecView.ListViewHolder>() {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ListViewHolder {
         val view : View = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_recycler, parent, false)
-        return ListViewHolder(view)
+        return ListViewHolder(view, onDoubleClick)
     }
 
     override fun onBindViewHolder(
@@ -37,11 +41,30 @@ class adapterRecView (private val data: List<dcBahan>) : RecyclerView.Adapter<ad
         return data.size
     }
 
-    class ListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ListViewHolder(
+        view: View,
+        private val onDoubleClick: (Int) -> Unit
+    ) : RecyclerView.ViewHolder(view) {
 
         val _namaBahan = view.findViewById< TextView>(R.id.nama)
         val _kategoriBahan = view.findViewById< TextView>(R.id.kategori)
         val _URIBahan = view.findViewById<ImageView>(R.id.URI)
 
+        private var lastClickTime = 0L
+        private val DOUBLE_CLICK_TIME = 300L
+
+        init {
+            view.setOnClickListener {
+                val now = System.currentTimeMillis()
+                if (now - lastClickTime < DOUBLE_CLICK_TIME) {
+                    // double click detected
+                    val pos = bindingAdapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        onDoubleClick(pos)
+                    }
+                }
+                lastClickTime = now
+            }
+        }
     }
 }

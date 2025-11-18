@@ -8,19 +8,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.ListView
-import android.widget.SimpleAdapter
 import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.motion.widget.KeyPosition
-import androidx.lifecycle.GeneratedAdapter
+import androidx.core.content.edit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,8 +39,10 @@ class BahanFragment : Fragment() {
     private var dataURL = mutableListOf<String>()
 
     private var arBahan = arrayListOf<dcBahan>()
-
     private lateinit var _rvBahan : RecyclerView
+
+
+    lateinit var sp : SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,16 +55,36 @@ class BahanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = adapterRecView(arBahan)
+        val adapter = adapterRecView(arBahan) { position ->
+            showDeleteDialog(position)
+        }
 
         val _addBahan = view.findViewById<Button>(R.id.addBahan)
         _addBahan.setOnClickListener {
             showAddBahanDialog(dataNama, dataKategori, dataURL, adapter)
         }
 
+        sp = requireContext().getSharedPreferences("dataBahan", Context.MODE_PRIVATE)
 
-        _rvBahan = view?.findViewById(R.id.rvBahan)!!
-        SiapkanData()
+        val gson = Gson()
+        val json = sp.getString("dataBahan", null)
+        val type = object : TypeToken<ArrayList<dcBahan>>() {}.type
+        if (json != null) {
+            arBahan = gson.fromJson(json, type)
+        }
+
+        _rvBahan = view.findViewById(R.id.rvBahan)!!
+
+        if (arBahan.size == 0) {
+            SiapkanData()
+        } else {
+            arBahan.forEach {
+                dataNama.add(it.nama)
+                dataKategori.add(it.kategori)
+                dataURL.add(it.URL)
+            }
+            arBahan.clear()
+        }
         TambahData()
         TampilkanData(adapter)
 
@@ -147,6 +166,28 @@ class BahanFragment : Fragment() {
         builder.show()
     }
 
+    private fun showDeleteDialog(position: Int) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Delete Bahan?")
+            .setMessage("Apakah kamu yakin ingin menghapus bahan ini?")
+            .setPositiveButton("Delete") { _, _ ->
+                arBahan.removeAt(position)
+
+                dataNama.removeAt(position)
+                dataKategori.removeAt(position)
+                dataURL.removeAt(position)
+
+                // Save ulang ke SharedPreferences
+                val json = Gson().toJson(arBahan)
+                sp.edit { putString("dataBahan", json) }
+
+                _rvBahan.adapter?.notifyItemRemoved(position)
+                Toast.makeText(requireContext(), "Berhasil dihapus", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Batal", null)
+            .show()
+    }
+
     fun SiapkanData() {
         dataNama = resources.getStringArray(R.array.namaProduk).toMutableList()
         dataKategori = resources.getStringArray(R.array.kategoriProduk).toMutableList()
@@ -154,10 +195,17 @@ class BahanFragment : Fragment() {
     }
 
     fun TambahData() {
-        arBahan.clear()
-        for (position in dataNama.indices) {
-            val dataBahan = dcBahan(dataNama[position], dataKategori[position], dataURL[position])
-            arBahan.add(dataBahan)
+        val gson = Gson()
+        sp.edit {
+            arBahan.clear()
+            for (position in dataNama.indices) {
+                val dataBahan = dcBahan(dataNama[position], dataKategori[position], dataURL[position])
+                arBahan.add(dataBahan)
+            }
+
+            val json = gson.toJson(arBahan)
+            putString("dataBahan", json)
+            Toast.makeText(requireContext(), "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
         }
     }
 
