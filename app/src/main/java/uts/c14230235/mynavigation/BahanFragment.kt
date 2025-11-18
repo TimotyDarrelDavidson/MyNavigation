@@ -55,15 +55,6 @@ class BahanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = adapterRecView(arBahan) { position ->
-            showDeleteDialog(position)
-        }
-
-        val _addBahan = view.findViewById<Button>(R.id.addBahan)
-        _addBahan.setOnClickListener {
-            showAddBahanDialog(dataNama, dataKategori, dataURL, adapter)
-        }
-
         sp = requireContext().getSharedPreferences("dataBahan", Context.MODE_PRIVATE)
 
         val gson = Gson()
@@ -85,9 +76,25 @@ class BahanFragment : Fragment() {
             }
             arBahan.clear()
         }
+
         TambahData()
+
+        val adapter = adapterRecView(
+            arBahan,
+            onDoubleClick = { position ->
+                showDeleteDialog(position)
+            },
+            onAddCart = { bahan ->
+                tambahKeCart(bahan)
+            }
+        )
+
         TampilkanData(adapter)
 
+        val _addBahan = view.findViewById<Button>(R.id.addBahan)
+        _addBahan.setOnClickListener {
+            showAddBahanDialog(dataNama, dataKategori, dataURL, adapter)
+        }
     }
 
     override fun onCreateView(
@@ -188,6 +195,29 @@ class BahanFragment : Fragment() {
             .show()
     }
 
+    private fun tambahKeCart(bahan: dcBahan) {
+        val gson = Gson()
+
+        // Ambil cart lama dari SharedPreferences
+        val json = sp.getString("dt_cart", null)
+
+        // Convert JSON ke list
+        val cartList: MutableList<dcBahan> = if (json != null) {
+            val type = object : TypeToken<MutableList<dcBahan>>(){}.type
+            gson.fromJson(json, type)
+        } else {
+            mutableListOf()
+        }
+
+        // Tambah item
+        cartList.add(bahan)
+
+        // Simpan kembali ke SharedPreferences
+        val newJson = gson.toJson(cartList)
+        sp.edit().putString("dt_cart", newJson).apply()
+
+        Toast.makeText(requireContext(), "Added to cart", Toast.LENGTH_SHORT).show()
+    }
     fun SiapkanData() {
         dataNama = resources.getStringArray(R.array.namaProduk).toMutableList()
         dataKategori = resources.getStringArray(R.array.kategoriProduk).toMutableList()

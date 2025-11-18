@@ -11,7 +11,8 @@ import com.squareup.picasso.Picasso
 
 class adapterRecView (
     private val data: List<dcBahan>,
-    private val onDoubleClick: (Int) -> Unit
+    private val onDoubleClick: (Int) -> Unit,
+    private val onAddCart: (dcBahan) -> Unit
 ) : RecyclerView.Adapter<adapterRecView.ListViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -35,6 +36,10 @@ class adapterRecView (
             .load(bahan.URL)
             .resize(100,100)
             .into(holder._URIBahan)
+
+        holder._btnAddCart.setOnClickListener {
+            onAddCart(bahan)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -49,6 +54,8 @@ class adapterRecView (
         val _namaBahan = view.findViewById< TextView>(R.id.nama)
         val _kategoriBahan = view.findViewById< TextView>(R.id.kategori)
         val _URIBahan = view.findViewById<ImageView>(R.id.URI)
+        val _btnAddCart = view.findViewById<ImageView>(R.id.btnAddCart)
+
 
         private var lastClickTime = 0L
         private val DOUBLE_CLICK_TIME = 300L
